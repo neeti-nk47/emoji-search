@@ -1,23 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import { emojiList } from "./emojiList";
+import EmojiPicker from "./EmojiPicker";
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterredEmoji, setFilterredEmoji] = useState(emojiList);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const filterredEmoji = emojiList.filter((item) =>
+      item.description.includes(searchQuery.toLowerCase())
+    );
+    setFilterredEmoji(filterredEmoji);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main p-5 container">
+      <h3 className="text-center mb-4 ">🤩Emoji Search😍</h3>
+      <div className="form-control searchbar mb-3">
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search Emoji"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div className="card p-2 emojibox">
+        <EmojiPicker emojis={filterredEmoji} />
+      </div>
     </div>
   );
 }
